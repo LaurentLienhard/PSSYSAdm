@@ -148,7 +148,7 @@
             '3' = 'NETWORK (user or computer logs on to the computer from the network)'
             '4' = 'BATCH (Scheduled tasks are executed on behalf of a user)'
             '5' = 'SERVICE (services and service accounts that logon to run a service)'
-            '6' = 'UNLOCK (when a user unlocks their machine)'
+            '7' = 'UNLOCK (when a user unlocks their machine)'
             '8' = 'NETWORKCLEARTEXT (password was passed in plaintext)'
             '9' = 'NEWCREDENTIALS (user uses the RunAs command)'
             '10' = 'REMOTEINTERACTIVE (user remotely accesses the computer through RDP applications)'
