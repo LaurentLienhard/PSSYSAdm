@@ -125,6 +125,22 @@
             '0xC0000064' = 'User logon with misspelled or bad user account'
             '0xC000006A' = 'User logon with misspelled or bad password'
             '0XC000006D' = 'This is either due to a bad username or authentication information'
+            '0XC000006E' = 'Unknown user name or bad password'
+            '0xC000006F' = 'User logon outside authorized hours'
+            '0xC0000070' = 'User logon from unauthorized workstation'
+            '0xC0000071' = 'User logon with expired password'
+            '0xC0000072' = 'User logon to account disabled by administrator'
+            '0XC00000DC' = 'indicates the Sam Server was in the wrong state to perform the desired operation'
+            '0XC0000133' = 'Clocks between DC and other computer too far out of sync'
+            '0XC000015B' = 'The user has not been granted the requested logon type (aka logon right) at this machine'
+            '0XC000018C' = 'The logon request failed because the trust relationship between the primary domain and the trusted domain failed'
+            '0XC0000192' = 'An attempt was made to logon, but the Netlogon service was not started'
+            '0xC0000193' = 'User logon with expired account'
+            '0XC0000224' = 'User is required to change password at next logon'
+            '0XC0000225' = 'Evidently a bug in Windows and not a risk'
+            '0xC0000234' = 'User logon with account locked'
+            '0XC00002EE' = 'Failure Reason: An Error occurred during Logon'
+            '0XC0000413' = 'Logon Failure: The machine you are logging onto is protected by an authentication firewall. The specified account is not allowed to authenticate to the machine'
         }
 
         LogonType = @{
