@@ -177,5 +177,3 @@ function Disable-CompromisedUser
 
     }
 }
-
-Disable-CompromisedUser -OU "OU=PHG,OU=Corporate,DC=fmlogistic,DC=fr","OU=India,DC=fmlogistic,DC=fr" -Verbose
