@@ -113,7 +113,7 @@ function Disable-CompromisedUser
         {
             Remove-Item -Path $LogFile -Force
         }
-
+        Write-Verbose ('[{0:O}] Log File {1}' -f (get-date),$LogFile)
         Write-Verbose ('[{0:O}] Retrieve AD User Account ' -f (get-date))
         $Users = @()
 
