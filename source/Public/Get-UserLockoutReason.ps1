@@ -35,7 +35,7 @@ function Get-UserLockoutReason
 
         $lockoutEvents = $null
         Write-Verbose ('[{0:O}] Test if computer : {1} is alive ' -f (get-date), $Computer)
-        if (Test-Connection -TargetName $Computer -Quiet -IPv4 -Count 2)
+        if (Test-Connection -ComputerName $Computer -Quiet -Count 2)
         {
             try
             {
