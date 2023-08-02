@@ -52,6 +52,7 @@ BuildWorkflow:
     - Build_Module_ModuleBuilder
     - Build_NestedModules_ModuleBuilder
     - Create_changelog_release_output
+    - Deploy_with_PSDeploy
 
 
   pack:
@@ -77,8 +78,8 @@ BuildWorkflow:
 
   publish:
     - publish_module_to_gallery
-    - Publish_Release_To_GitHub
-    - Publish_GitHub_Wiki_Content
+    #- Publish_Release_To_GitHub
+    #- Publish_GitHub_Wiki_Content
 
 
 
