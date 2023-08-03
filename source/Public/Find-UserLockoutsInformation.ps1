@@ -1,5 +1,44 @@
 Function Find-UserLockoutsInformation
 {
+<#
+    .SYNOPSIS
+    Find information about locked user account
+
+    .DESCRIPTION
+    This fonction search for locked user on PDC Emulator and return the lock source
+    return :
+    User             : User1
+    DomainController : PDCEmulator
+    EventId          : 4740
+    LockoutTimeStamp : 8/3/2023 6:18:12 AM
+    Message          : A user account was locked out.
+    LockoutSource    : SourceComputer
+    To find the reason use : Get-UserLockoutReason -Computer SourceComputer -Identity User1
+
+    .PARAMETER Identity
+    User to check (by default all)
+
+    .PARAMETER DC
+    Domain controller on which you want to look up information (by default PDC Emulator)
+
+    .PARAMETER Credential
+    Administrator credential to connect to the DC
+
+    .EXAMPLE
+    Find-UserLockoutsInformation -Credential (Get-Credential MyAdminAccount)
+    Search information for all locked users in PDC Emulator
+
+    .EXAMPLE
+    Find-UserLockoutsInformation -Identity User1 -Credential (Get-Credential MyAdminAccount)
+    Search information for user User1 in PDC Emulator
+
+    .EXAMPLE
+    Find-UserLockoutsInformation -Identity User1 -DC MyDC1 -Credential (Get-Credential MyAdminAccount)
+    Search information for user User1 in specific domain controler MyDC1
+
+    .NOTES
+    General notes
+#>
     [CmdletBinding(
         DefaultParameterSetName = 'All'
     )]

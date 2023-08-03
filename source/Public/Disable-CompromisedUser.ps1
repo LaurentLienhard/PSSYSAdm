@@ -1,87 +1,93 @@
-<#
-.SYNOPSIS
-Disable compromised user
-
-.DESCRIPTION
-Disable compromised users
-
-.PARAMETER Identity
-One or more user(s) to disable
-
-.PARAMETER FileName
-File with a list of users to disable. txt with one name by line
-
-.PARAMETER OU
-One or more OU(s) in which we want to disable all users
-
-.PARAMETER Check
-Only check if the users passed in parameter, whatever the way (Identity, Filename or OU), are disable
-
-.EXAMPLE
-Disable-CompromisedUser -Identity "User1"
-
-Disable the user account : User1
-
-.EXAMPLE
-Disable-CompromisedUser -Identity "User1" -Check
-
-Check if user account User1 is disable
-
-.EXAMPLE
-Disable-CompromisedUser -Identity "User1","User2","User3"
-
-Disable users account : User1, User2 and User3
-
-.EXAMPLE
-Disable-CompromisedUser -Identity "User1","User2","User3" -Check
-
-Check if users account User1, User2 and User3 are disable
-
-.EXAMPLE
-Disable-CompromisedUser -FileName "c:\temp\CompromisedUser.txt"
-
-File template CompromisedUser.txt :
-User1
-User2
-User3
-
-Disable users account : User1, User2 and User3
-
-.EXAMPLE
-Disable-CompromisedUser -FileName "c:\temp\CompromisedUser.txt" -Check
-
-File template CompromisedUser.txt :
-User1
-User2
-User3
-
-Check if users account User1, User2 and User3 are disable
-
-.EXAMPLE
-Disable-CompromisedUser -OU "OU=OU1,DC=contoso,DC=com"
-
-Disable all users present in OU1
-
-.EXAMPLE
-Disable-CompromisedUser -OU "OU=OU1,DC=contoso,DC=com" -Check
-
-Check if all users present in OU1 are disable
-
-.EXAMPLE
-Disable-CompromisedUser -OU "OU=OU1,DC=contoso,DC=com","OU=OU2,DC=contoso,DC=com"
-
-Disable all users present in OU1 and OU2
-
-.EXAMPLE
-Disable-CompromisedUser -OU "OU=OU1,DC=contoso,DC=com","OU=OU2,DC=contoso,DC=com" -check
-
-Check if all users present in OU1 and OU2 are disable
-
-.NOTES
-General notes
-#>
 function Disable-CompromisedUser
 {
+<#
+    .SYNOPSIS
+    Disable compromised user
+
+    .DESCRIPTION
+    In case of compromission from some users, you can rapidly disable this users.
+    You can pass to parameter :
+        - a nominative list of user
+        - a file with a nominative list of users (one user by line)
+        - an OU to disable all users
+    Check example for more details (get-help Disable-CompromisedUser -Examples)
+    A log file is create in your temp directory ($env:temp)
+
+    .PARAMETER Identity
+    One or more user(s) to disable
+
+    .PARAMETER FileName
+    File with a list of users to disable. txt with one name by line
+
+    .PARAMETER OU
+    One or more OU(s) in which we want to disable all users
+
+    .PARAMETER Check
+    Only check if the users passed in parameter, whatever the way (Identity, Filename or OU), are disable
+
+    .EXAMPLE
+    Disable-CompromisedUser -Identity "User1"
+
+    Disable the user account : User1
+
+    .EXAMPLE
+    Disable-CompromisedUser -Identity "User1" -Check
+
+    Check if user account User1 is disable
+
+    .EXAMPLE
+    Disable-CompromisedUser -Identity "User1","User2","User3"
+
+    Disable users account : User1, User2 and User3
+
+    .EXAMPLE
+    Disable-CompromisedUser -Identity "User1","User2","User3" -Check
+
+    Check if users account User1, User2 and User3 are disable
+
+    .EXAMPLE
+    Disable-CompromisedUser -FileName "c:\temp\CompromisedUser.txt"
+
+    File template CompromisedUser.txt :
+    User1
+    User2
+    User3
+
+    Disable users account : User1, User2 and User3
+
+    .EXAMPLE
+    Disable-CompromisedUser -FileName "c:\temp\CompromisedUser.txt" -Check
+
+    File template CompromisedUser.txt :
+    User1
+    User2
+    User3
+
+    Check if users account User1, User2 and User3 are disable
+
+    .EXAMPLE
+    Disable-CompromisedUser -OU "OU=OU1,DC=contoso,DC=com"
+
+    Disable all users present in OU1
+
+    .EXAMPLE
+    Disable-CompromisedUser -OU "OU=OU1,DC=contoso,DC=com" -Check
+
+    Check if all users present in OU1 are disable
+
+    .EXAMPLE
+    Disable-CompromisedUser -OU "OU=OU1,DC=contoso,DC=com","OU=OU2,DC=contoso,DC=com"
+
+    Disable all users present in OU1 and OU2
+
+    .EXAMPLE
+    Disable-CompromisedUser -OU "OU=OU1,DC=contoso,DC=com","OU=OU2,DC=contoso,DC=com" -check
+
+    Check if all users present in OU1 and OU2 are disable
+
+    .NOTES
+    General notes
+#>
     [CmdletBinding(DefaultParameterSetName = "ByUser")]
     param (
         [Parameter(

@@ -1,5 +1,28 @@
 function Get-UserLockoutReason
 {
+<#
+    .SYNOPSIS
+    Search user lockout reason
+
+    .DESCRIPTION
+    You can search the reason of locked user on a specific computer
+    To find the source you can use : Find-UserLockoutsInformation -Identity User1 -DC MyDC1 -Credential (Get-Credential MyAdminAccount)
+
+    .PARAMETER Computer
+    User lockout source computer
+
+    .PARAMETER Identity
+    Name of the user for whom we are looking for the source of the lock
+
+    .PARAMETER Credential
+    Administrator credential to connect to the computer
+
+    .EXAMPLE
+    Get-UserLockoutReason -Computer ComputerSource -Identity User1 -Credential (Get-Credential MyAdminAccount)
+
+    .NOTES
+    General notes
+#>
     [CmdletBinding(
         DefaultParameterSetName = 'All'
     )]
