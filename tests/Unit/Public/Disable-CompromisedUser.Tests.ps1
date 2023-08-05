@@ -1,0 +1,2 @@
+Describe "Disable-CompromisedUser" {
+}

@@ -26,6 +26,7 @@ function Get-UserLockoutReason
     [CmdletBinding(
         DefaultParameterSetName = 'All'
     )]
+    [OutputType([System.Object[]])]
     param (
         [System.String]$Computer,
         [Parameter(

@@ -103,8 +103,8 @@ Pester:
   # - tests/Integration
   ExcludeTag:
   #  - helpQuality
-    - FunctionalQuality
-    - TestQuality
+  #  - FunctionalQuality
+  #  - TestQuality
   Tag:
   CodeCoverageThreshold: 0 # Set to 0 to bypass
   #CodeCoverageOutputFile: JaCoCo_$OsShortName.xml
