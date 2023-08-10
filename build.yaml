@@ -46,13 +46,13 @@ BuildWorkflow:
   '.': # "." is the default Invoke-Build workflow. It is called when no -Tasks is specified to the build.ps1
     - build
     - test
+    - deploy
 
   build:
     - Clean
     - Build_Module_ModuleBuilder
     - Build_NestedModules_ModuleBuilder
     - Create_changelog_release_output
-    - Deploy_with_PSDeploy
 
 
   pack:
@@ -74,14 +74,15 @@ BuildWorkflow:
   # Use this task when you have multiple parallel tests, which produce multiple
   # code coverage files and needs to get merged into one file.
   #merge:
-    #- Merge_CodeCoverage_Files
+    #- Merge_CodeCoverage_File
 
   publish:
     - publish_module_to_gallery
     #- Publish_Release_To_GitHub
     #- Publish_GitHub_Wiki_Content
 
-
+  deploy:
+    - Deploy_with_PSDeploy
 
 ####################################################
 #       PESTER  Configuration                      #

@@ -1,6 +1,6 @@
 function Get-UserLockoutReason
 {
-<#
+    <#
     .SYNOPSIS
     Search user lockout reason
 
@@ -105,6 +105,7 @@ function Get-UserLockoutReason
                 {
                     $eventXML = [xml]$event.ToXml()
                     # Building output based on advanced properties
+
                     $ResultEvents += @{
                         LockedUserName   = $eventXML.Event.EventData.Data[5].'#text'
                         LogonType        = $LogonInfo.PrivateData.LogonType."$($eventXML.Event.EventData.Data[10].'#text')"
@@ -124,8 +125,7 @@ function Get-UserLockoutReason
                     $eventXML = [xml]$event.ToXml()
                     If ($Event | Where-Object { $eventXML.Event.EventData.Data[5].'#text' -match $Identity })
                     {
-
-                        # Building output based on advanced properties
+                        #Building output based on advanced properties
                         $ResultEvents += @{
                             LockedUserName   = $eventXML.Event.EventData.Data[5].'#text'
                             LogonType        = $LogonInfo.PrivateData.LogonType.($eventXML.Event.EventData.Data[10].'#text')
