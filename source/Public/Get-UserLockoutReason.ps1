@@ -94,8 +94,6 @@ function Get-UserLockoutReason
 
     process
     {
-
-        $ResultEvents = @()
         switch ($PSCmdlet.ParameterSetName)
         {
             All
@@ -104,17 +102,15 @@ function Get-UserLockoutReason
                 Foreach ($Event in $lockoutEvents)
                 {
                     $eventXML = [xml]$event.ToXml()
-                    # Building output based on advanced properties
-
-                    $ResultEvents += @{
-                        LockedUserName   = $eventXML.Event.EventData.Data[5].'#text'
-                        LogonType        = $LogonInfo.PrivateData.LogonType."$($eventXML.Event.EventData.Data[10].'#text')"
-                        LogonProcessName = $eventXML.Event.EventData.Data[11].'#text'
-                        ProcessName      = $eventXML.Event.EventData.Data[18].'#text'
-                        FailureReason    = $LogonInfo.PrivateData.FailureReason."$($eventXML.Event.EventData.Data[8].'#text')"
-                        FailureStatus    = $LogonInfo.PrivateData.FailureType."$($eventXML.Event.EventData.Data[7].'#text')"
-                        FailureSubStatus = $LogonInfo.PrivateData.FailureType."$($eventXML.Event.EventData.Data[9].'#text')"
-                    }
+                    $Event | Select-Object -Property @(
+                        @{label = 'LockedUserName' ; Expression = {$eventXML.Event.EventData.Data[5].'#text'}}
+                        @{label = 'LogonType' ; Expression = {$LogonInfo.PrivateData.LogonType."$($eventXML.Event.EventData.Data[10].'#text')"}}
+                        @{label = 'LogonProcessName' ; Expression = {$eventXML.Event.EventData.Data[11].'#text'}}
+                        @{label = 'ProcessName' ; Expression = {$eventXML.Event.EventData.Data[18].'#text'}}
+                        @{label = 'FailureReason' ; Expression = {$LogonInfo.PrivateData.FailureReason."$($eventXML.Event.EventData.Data[8].'#text')"}}
+                        @{label = 'FailureStatus' ; Expression = {$LogonInfo.PrivateData.FailureType."$($eventXML.Event.EventData.Data[7].'#text')"}}
+                        @{label = 'FailureSubStatus' ; Expression = {$LogonInfo.PrivateData.FailureType."$($eventXML.Event.EventData.Data[9].'#text')"}}
+                    )
                 }
             }
             ByUser
@@ -125,16 +121,15 @@ function Get-UserLockoutReason
                     $eventXML = [xml]$event.ToXml()
                     If ($Event | Where-Object { $eventXML.Event.EventData.Data[5].'#text' -match $Identity })
                     {
-                        #Building output based on advanced properties
-                        $ResultEvents += @{
-                            LockedUserName   = $eventXML.Event.EventData.Data[5].'#text'
-                            LogonType        = $LogonInfo.PrivateData.LogonType.($eventXML.Event.EventData.Data[10].'#text')
-                            LogonProcessName = $eventXML.Event.EventData.Data[11].'#text'
-                            ProcessName      = $eventXML.Event.EventData.Data[18].'#text'
-                            FailureReason    = $LogonInfo.PrivateData.FailureReason."$($eventXML.Event.EventData.Data[8].'#text')"
-                            FailureStatus    = $LogonInfo.PrivateData.FailureType."$($eventXML.Event.EventData.Data[7].'#text')"
-                            FailureSubStatus = $LogonInfo.PrivateData.FailureType."$($eventXML.Event.EventData.Data[9].'#text')"
-                        }
+                        $Event | Select-Object -Property @(
+                            @{label = 'LockedUserName' ; Expression = {$eventXML.Event.EventData.Data[5].'#text'}}
+                            @{label = 'LogonType' ; Expression = {$LogonInfo.PrivateData.LogonType."$($eventXML.Event.EventData.Data[10].'#text')"}}
+                            @{label = 'LogonProcessName' ; Expression = {$eventXML.Event.EventData.Data[11].'#text'}}
+                            @{label = 'ProcessName' ; Expression = {$eventXML.Event.EventData.Data[18].'#text'}}
+                            @{label = 'FailureReason' ; Expression = {$LogonInfo.PrivateData.FailureReason."$($eventXML.Event.EventData.Data[8].'#text')"}}
+                            @{label = 'FailureStatus' ; Expression = {$LogonInfo.PrivateData.FailureType."$($eventXML.Event.EventData.Data[7].'#text')"}}
+                            @{label = 'FailureSubStatus' ; Expression = {$LogonInfo.PrivateData.FailureType."$($eventXML.Event.EventData.Data[9].'#text')"}}
+                        )
                     }
 
                 }
@@ -147,6 +142,5 @@ function Get-UserLockoutReason
 
     end
     {
-        return $ResultEvents
     }
 }
