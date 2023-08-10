@@ -12,7 +12,7 @@
     RootModule           = 'PSSYSAdm.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '0.0.3'
+    ModuleVersion        = '0.0.4'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -160,6 +160,12 @@
             '11'= 'CACHEDINTERACTIVE (user logons to the computer without having to contact the domain controller)'
         }
 
+        ExternalModuleDependencies = @(
+            @{
+                ModuleName="ActiveDirectory"
+                ModuleVersion="1.0.1.0"
+            }
+        )
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
