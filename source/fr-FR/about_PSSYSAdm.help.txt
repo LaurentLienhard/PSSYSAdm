@@ -1,0 +1,23 @@
+SUJET
+à propos de_Sampler
+
+DESCRIPTION COURTE
+Modèle pour les modules PowerShell et les ressources DSC
+
+DESCRIPTION LONGUE
+Ce projet vise à fournir un modèle et un pipeline de construction pour les modules PowerShell et les ressources DSC.
+
+EXEMPLES
+PS C:>
+
+NOTE :
+Merci à tous ceux qui ont contribué à ce module en écrivant du code, en partageant leurs opinions et en fournissant des commentaires.
+
+NOTE DE DÉPANNAGE :
+Consultez le dépôt Github pour les problèmes et les nouvelles versions.
+
+VOIR AUSSI
+
+https://github.com/gaelcolas/Sampler
+MOTS CLÉS
+Module, Construction, Tâche, Modèle

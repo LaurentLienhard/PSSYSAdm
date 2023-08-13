@@ -9,6 +9,7 @@
 BuiltModuleSubdirectory: module
 CopyPaths:
   - en-US
+  - fr-FR
 #  - DSCResources
   # - Modules
 Encoding: UTF8
@@ -52,6 +53,8 @@ BuildWorkflow:
     - Build_Module_ModuleBuilder
     - Build_NestedModules_ModuleBuilder
     - Create_changelog_release_output
+    - Update_markdown_help_source
+
 
 
   pack:
