@@ -12,7 +12,7 @@
     RootModule           = 'PSSYSAdm.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '0.0.4'
+    ModuleVersion        = '0.0.8'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -55,6 +55,10 @@
         @{
             ModuleName="PSFramework"
             ModuleVersion="1.8.291"
+        }
+        @{
+            ModuleName="Send-MailKitMessage"
+            ModuleVersion="3.2.0"
         }
     )
 

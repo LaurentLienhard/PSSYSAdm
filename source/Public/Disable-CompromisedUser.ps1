@@ -113,68 +113,64 @@ function Disable-CompromisedUser
 
     begin
     {
-
-        $LogFile = "$env:temp\DisableCompromisedUser-$((get-date).ToString("yyyyMMddTHHmmss")).log"
-        if (Test-Path -Path $LogFile)
-        {
-            Remove-Item -Path $LogFile -Force
+        $paramSetPSFLoggingProvider = @{
+            Name         = 'logfile'
+            InstanceName = 'Disable-CompromisedUser'
+            FilePath = "$($env:temp)\Disable-CompromisedUser-%Date% %hour%%minute%.csv"
+            Enabled      = $true
+            Wait         = $true
         }
-        Write-Verbose ('[{0:O}] Log File {1}' -f (get-date),$LogFile)
-        Write-Verbose ('[{0:O}] Retrieve AD User Account ' -f (get-date))
+        Set-PSFLoggingProvider @paramSetPSFLoggingProvider
+
+        Write-PSFMessage -Message "Retrieve AD User Account" -Level Verbose -Target MAIN
         $Users = @()
 
         switch ($PSCmdlet.ParameterSetName)
         {
             ByUser
             {
-                Add-content $Logfile -value ('[{0:O}] Retrieve AD User Account by user list ' -f (get-date))
+                Write-PSFMessage -Message "Retrieve AD User Account by user list"  -Level Verbose -Target BYUSER
                 foreach ($User in $Identity)
                 {
                     try
                     {
                         $Users += Get-ADUser -Identity $User -Properties SamAccountName,DisplayName,Enabled -ErrorAction Continue | Select-Object SamAccountName,DisplayName,Enabled
-                        Write-Verbose ('[{0:O}] User {1} found ' -f (get-date),$User)
-                        Add-content $Logfile -value ('[{0:O}] User {1} found ' -f (get-date),$User)
+                        Write-PSFMessage -Message "User $($User) found"  -Level Verbose -Target BYUSER
                     }
                     catch [Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException]
                     {
-                        Write-Verbose ('[{0:O}] user {1} not found' -f (get-date), $User)
-                        Add-content $Logfile -value (('[{0:O}] user {1} not found' -f (get-date), $User))
+                        Write-PSFMessage -Message "User $($User) not found"  -Level Verbose -Target BYUSER
                     }
                 }
             }
             ByFileName
             {
-                Add-content $Logfile -value ('[{0:O}] [INFO] Retrieve AD User Account by filename ' -f (get-date))
+                Write-PSFMessage -Message "Retrieve AD User Account by filename"  -Level Verbose -Target BYFILENAME
                 foreach ($User in (Get-Content -Path $FileName))
                 {
                     try
                     {
                         $Users += Get-ADUser -Identity $User -Properties SamAccountName,DisplayName,Enabled -ErrorAction Continue | Select-Object SamAccountName,DisplayName,Enabled
-                        Write-Verbose ('[{0:O}] [INFO] [FOUND] user {1} ' -f (get-date),$User)
-                        Add-content $Logfile -value ('[{0:O}] [INFO] [FOUND] user {1} ' -f (get-date),$User)
+                        Write-PSFMessage -Message "User $($User) found"  -Level Verbose -Target BYFILENAME
                     }
                     catch [Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException]
                     {
-                        Write-Verbose ('[{0:O}] [ERROR] [NOTFOUND] user {1} ' -f (get-date), $User)
-                        Add-content $Logfile -value (('[{0:O}] [ERROR] [NOTFOUND] user {1}' -f (get-date), $User))
+                        Write-PSFMessage -Message "User $($User) not found"  -Level Verbose -Target BYFILENAME
                     }
                 }
             }
             ByOu
             {
-                Add-content $Logfile -value ('[{0:O}] [INFO] Retrieve AD User Account by OU list ' -f (get-date))
+                Write-PSFMessage -Message "Retrieve AD User Account by OU list"  -Level Verbose -Target BYOU
                 foreach ($Organ in $OU)
                 {
-                    Write-Verbose ('[{0:O}] [INFO] Retrieve all users from OU {1}' -f (get-date), $Organ)
-                    Add-content $Logfile -value (('[{0:O}] [INFO] Retrieve all users from OU {1}' -f (get-date), $Organ))
+                    Write-PSFMessage -Message "Retrieve all users from OU $($Organ)"  -Level Verbose -Target BYOU
                     $Users += Get-ADUser -Filter * -SearchBase $Organ -Properties SamAccountName,DisplayName,Enabled | Select-Object SamAccountName,DisplayName,Enabled
+
                 }
             }
         }
-
-        Write-Verbose ('[{0:O}] [INFO] {1} AD user account found ' -f (get-date), $Users.Count)
-        Add-content $Logfile -value (('[{0:O}] [INFO] {1} AD user account found ' -f (get-date), $Users.Count))
+        Write-PSFMessage -Message "$($Users.Count) AD user account found"  -Level Verbose -Target MAIN
     }
 
     process
@@ -184,28 +180,25 @@ function Disable-CompromisedUser
         {
             if ($Check)
             {
-                Write-Verbose (('[{0:O}] [INFO] Check state for user {1} ' -f (get-date), $User.SamAccountName))
-                Add-content $Logfile -value (('[{0:O}] [INFO] Check state for user {1} [{2}]' -f (get-date), $User.SamAccountName,$user.DisplayName))
+                Write-PSFMessage -Message "Check state for user $( $User.SamAccountName)"  -Level Verbose -Target MAIN
                 if ($user.Enabled -eq "True")
                 {
-                    Write-Verbose (('[{0:O}] [INFO] [ENABLE] user {1}  ' -f (get-date), $User.SamAccountName))
-                    Add-content $Logfile -value (('[{0:O}] [ENABLE] user {1} [{2}] ' -f (get-date), $User.SamAccountName,$user.DisplayName))
+                    Write-PSFMessage -Message "user $($User.SamAccountName) is enabled"  -Level Verbose -Target MAIN
                 } else
                 {
-                    Write-Verbose (('[{0:O}] [INFO] [DISABLE] user {1}' -f (get-date), $User.SamAccountName))
-                    Add-content $Logfile -value (('[{0:O}] [DISABLE] user {1} [{2}] ' -f (get-date), $User.SamAccountName,$User.DisplayName))
+                    Write-PSFMessage -Message "user $($User.SamAccountName) is disabled"  -Level Verbose -Target MAIN
                 }
             } else
             {
-                Write-Verbose ('[{0:O}] [INFO] Disable AD Account {1} ' -f (get-date), $User.SamAccountName)
+
                 Disable-ADAccount -Identity $user.SamAccountName -WhatIf -Confirm:$false
-                Add-content $Logfile -value (('[{0:O}] [INFO] {1} [{2}] AD account disabled ' -f (get-date), $User.SamAccountName,$User.DisplayName))
+                Write-PSFMessage -Message "Disabling $($User.SamAccountName) AD account"  -Level Verbose -Target MAIN
             }
         }
     }
 
     end
     {
-
+        Wait-PSFMessage
     }
 }

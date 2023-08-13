@@ -1,6 +1,6 @@
 function Get-RemoteRDPSession
 {
-<#
+    <#
     .SYNOPSIS
     Retrieve RDP session
 
@@ -27,7 +27,7 @@ function Get-RemoteRDPSession
     General notes
 #>
     param (
-        [Parameter()]
+        [Parameter(ValueFromPipeline = $true)]
         [string]$ComputerName,
         # Specifies the user account credentials to use when performing this task.
         [Parameter()]
@@ -37,47 +37,65 @@ function Get-RemoteRDPSession
         $Credential = [System.Management.Automation.PSCredential]::Empty
     )
 
-    $QueryArguments = @{
-        ComputerName    = $ComputerName
-    }
-
-    if ($PSBoundParameters.ContainsKey('Credential'))
+    begin
     {
-        $QueryArguments['Credential'] = $Credential
+
     }
 
-    $query = Invoke-Command @QueryArguments -ScriptBlock { quser }
-    if ($query -match 'No User exists for ')
+    process
     {
-        Write-Output "No active RDP sessions found on $ComputerName."
-        return
-    }
+        if ([COMPUTER]::TestIfComputerExist($ComputerName) -and [COMPUTER]::TestIfComputerIsAlive($ComputerName))
+        {
+            $QueryArguments = @{
+                ComputerName = $ComputerName
+            }
 
-    $sessions = $query | Select-Object -Skip 1 | ForEach-Object {
-        $parts = $_.Trim() -split '\s+'
-        [PSCustomObject]@{
-            UserName    = $parts[0]
-            SessionName = $parts[1]
-            ID          = $parts[2]
-            State       = $parts[3]
-            IdleTime    = if ($parts.Count -ge 6)
+            if ($PSBoundParameters.ContainsKey('Credential'))
             {
-                $parts[5]
+                $QueryArguments['Credential'] = $Credential
             }
-            else
+
+            $query = Invoke-Command @QueryArguments -ScriptBlock { quser }
+            if ($query -match 'No User exists for ')
             {
-                'N/A'
+                Write-Output "No active RDP sessions found on $ComputerName."
+                return
             }
-            LogonTime   = if ($parts.Count -ge 5)
-            {
-                "$($parts[4]) $([DateTime]::Now.ToShortDateString())"
+
+            $sessions = $query | Select-Object -Skip 1 | ForEach-Object {
+                $parts = $_.Trim() -split '\s+'
+                [PSCustomObject]@{
+                    ComputerName = $ComputerName
+                    UserName     = $parts[0]
+                    SessionName  = $parts[1]
+                    ID           = $parts[2]
+                    State        = $parts[3]
+                    IdleTime     = if ($parts.Count -ge 6)
+                    {
+                        $parts[5]
+                    }
+                    else
+                    {
+                        'N/A'
+                    }
+                    LogonTime    = if ($parts.Count -ge 5)
+                    {
+                        "$($parts[4]) $([DateTime]::Now.ToShortDateString())"
+                    }
+                    else
+                    {
+                        'N/A'
+                    }
+                }
             }
-            else
-            {
-                'N/A'
-            }
+        } else
+        {
+            Write-Error ('[{0:O}] Computer {1} not found or not alive ' -f (get-date), $ComputerName)
         }
     }
 
-    return $sessions
+    end
+    {
+        return $sessions
+    }
 }
