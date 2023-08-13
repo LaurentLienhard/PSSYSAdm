@@ -46,7 +46,6 @@ BuildWorkflow:
   '.': # "." is the default Invoke-Build workflow. It is called when no -Tasks is specified to the build.ps1
     - build
     - test
-    - deploy
 
   build:
     - Clean
@@ -103,9 +102,10 @@ Pester:
   # - tests/Unit
   # - tests/Integration
   ExcludeTag:
-    - helpQuality
-    - FunctionalQuality
-    - TestQuality
+  #  - helpQuality
+  #  - FunctionalQuality
+  #  - TestQuality
+
   Tag:
   CodeCoverageThreshold: 0 # Set to 0 to bypass
   #CodeCoverageOutputFile: JaCoCo_$OsShortName.xml
