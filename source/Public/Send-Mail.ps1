@@ -1,6 +1,6 @@
 function Send-Mail
 {
-    <#
+<#
 .SYNOPSIS
     Sends an email using the MimeKit library.
 

@@ -60,6 +60,10 @@
             ModuleName="Send-MailKitMessage"
             ModuleVersion="3.2.0"
         }
+        @{
+            ModuleName="ImportExcel"
+            ModuleVersion="7.8.4"
+        }
     )
 
     # Assemblies that must be loaded prior to importing this module

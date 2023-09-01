@@ -17,3 +17,4 @@ node_modules
 package-lock.json
 debug.ps1
 tests/CompromisedUser.txt
+tests/test.xlsx
