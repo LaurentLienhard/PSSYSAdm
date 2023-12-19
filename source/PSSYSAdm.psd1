@@ -12,7 +12,7 @@
     RootModule           = 'PSSYSAdm.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '0.0.8'
+    ModuleVersion        = '0.0.9'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -33,7 +33,7 @@
     Description          = 'Lot Of Stuff for admin day job'
 
     # Minimum version of the Windows PowerShell engine required by this module
-    PowerShellVersion    = '5.0'
+    PowerShellVersion    = '5.1'
 
     # Name of the Windows PowerShell host required by this module
     # PowerShellHostName = ''

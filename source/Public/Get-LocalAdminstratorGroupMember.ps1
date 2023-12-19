@@ -99,3 +99,6 @@ Last Updated: 09/08/2023
         $result
     }
 }
+
+
+Get-LocalAdministratorGroupMember -Credential (Get-Secret FMAdminAccount)
